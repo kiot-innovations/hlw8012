@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Arduino.h>
 #include "HLW8012.h"
+ExponentialFilter<volatile unsigned long> PowerFilter(DEFAULT_FILTER_WEIGHT, 0);
 
 void HLW8012::begin(
     unsigned char cf_pin,
@@ -29,6 +30,7 @@ void HLW8012::begin(
     unsigned char currentWhen,
     bool use_interrupts,
     unsigned long pulse_timeout
+    unsigned char filter_weight
     ) {
 
     _cf_pin = cf_pin;
@@ -46,8 +48,7 @@ void HLW8012::begin(
 
     _mode = _current_mode;
     digitalWrite(_sel_pin, _mode);
-
-
+    PowerFilter.SetWeight(filter_weight);
 }
 
 void HLW8012::setMode(hlw8012_mode_t mode) {
@@ -103,7 +104,9 @@ unsigned int HLW8012::getActivePower() {
     } else {
         _power_pulse_width = pulseIn(_cf_pin, HIGH, _pulse_timeout);
     }
-    _power = (_power_pulse_width > 0) ? _power_multiplier / _power_pulse_width / 2 : 0;
+    unsigned int ppw = PowerFilter.Current(); // Fixing value of this.
+    _power = ( ppw > 0) ? _power_multiplier / ppw / 2 : 0;
+    // _power = (_power_pulse_width > 0) ? _power_multiplier / _power_pulse_width / 2 : 0;
     return _power;
 }
 
@@ -185,6 +188,7 @@ void ICACHE_RAM_ATTR HLW8012::cf_interrupt() {
     _power_pulse_width = now - _last_cf_interrupt;
     _last_cf_interrupt = now;
     _pulse_count++;
+    PowerFilter.Filter(_power_pulse_width);
 }
 
 void ICACHE_RAM_ATTR HLW8012::cf1_interrupt() {
@@ -218,7 +222,10 @@ void ICACHE_RAM_ATTR HLW8012::cf1_interrupt() {
 }
 
 void HLW8012::_checkCFSignal() {
-    if ((micros() - _last_cf_interrupt) > _pulse_timeout) _power_pulse_width = 0;
+    if ((micros() - _last_cf_interrupt) > _pulse_timeout){
+        _power_pulse_width = 0;
+        PowerFilter.SetCurrent(0);
+    } 
 }
 
 void HLW8012::_checkCF1Signal() {

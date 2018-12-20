@@ -52,6 +52,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // will have no time to stabilise
 #define PULSE_TIMEOUT       2000000
 
+#define DEFAULT_FILTER_WEIGHT 20
+
+
 // Define ICACHE_RAM_ATTR for AVR platforms
 #if defined(ARDUINO_ARCH_AVR)
 #define ICACHE_RAM_ATTR     
@@ -76,7 +79,9 @@ class HLW8012 {
             unsigned char sel_pin,
             unsigned char currentWhen = HIGH,
             bool use_interrupts = true,
-            unsigned long pulse_timeout = PULSE_TIMEOUT);
+            unsigned long pulse_timeout = PULSE_TIMEOUT,
+            unsigned char filter_weight = DEFAULT_FILTER_WEIGHT
+            );
 
         void setMode(hlw8012_mode_t mode);
         hlw8012_mode_t getMode();
