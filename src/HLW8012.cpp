@@ -151,17 +151,20 @@ void HLW8012::resetEnergy() {
 }
 
 void HLW8012::expectedCurrent(double value) {
-    if (_current == 0) getCurrent();
+    // if (_current == 0) getCurrent();
+    getCurrent();
     if (_current > 0) _current_multiplier *= (value / _current);
 }
 
 void HLW8012::expectedVoltage(unsigned int value) {
-    if (_voltage == 0) getVoltage();
+    // if (_voltage == 0) getVoltage();
+    getVoltage();
     if (_voltage > 0) _voltage_multiplier *= ((double) value / _voltage);
 }
 
 void HLW8012::expectedActivePower(unsigned int value) {
-    if (_power == 0) getActivePower();
+    // if (_power == 0) getActivePower();
+    getActivePower();
     if (_power > 0) _power_multiplier *= ((double) value / _power);
 }
 
