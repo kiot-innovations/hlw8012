@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Arduino.h>
 #include "HLW8012.h"
+#include "Filter.h"
+
 ExponentialFilter<volatile unsigned long> PowerFilter(DEFAULT_FILTER_WEIGHT, 0);
 
 void HLW8012::begin(
