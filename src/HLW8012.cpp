@@ -31,7 +31,7 @@ void HLW8012::begin(
     unsigned char sel_pin,
     unsigned char currentWhen,
     bool use_interrupts,
-    unsigned long pulse_timeout
+    unsigned long pulse_timeout,
     unsigned char filter_weight
     ) {
 
