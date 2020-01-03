@@ -179,6 +179,7 @@ void HLW8012::expectedCurrentAveraged(double value) {
     unsigned long now = millis();
     while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
         if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
+        delay(1);
         expectedCurrent(value);
         if(_mul == 0){
             _mul = _current_multiplier;
@@ -196,6 +197,7 @@ void HLW8012::expectedVoltageAveraged(unsigned int value) {
     unsigned long now = millis();
     while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
         if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
+        delay(1);
         expectedVoltage(value);
         if(_mul == 0){
             _mul = _voltage_multiplier;
@@ -213,6 +215,7 @@ void HLW8012::expectedActivePowerAveraged(unsigned int value) {
     unsigned long now = millis();
     while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
         if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
+        delay(1);
         expectedActivePower(value);
         if(_mul == 0){
             _mul = _power_multiplier;
