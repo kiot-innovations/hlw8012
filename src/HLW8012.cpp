@@ -192,7 +192,7 @@ void HLW8012::expectedCurrentAveraged(double value) {
 
 void HLW8012::expectedVoltageAveraged(unsigned int value) {
        //Doing Moving Average
-    double _mul = 0;
+    unsigned int _mul = 0;
     unsigned long now = millis();
     while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
         if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
@@ -209,7 +209,7 @@ void HLW8012::expectedVoltageAveraged(unsigned int value) {
 
 void HLW8012::expectedActivePowerAveraged(unsigned int value) {
        //Doing Moving Average
-    double _mul = 0;
+    unsigned int _mul = 0;
     unsigned long now = millis();
     while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
         if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
