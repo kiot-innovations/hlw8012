@@ -173,6 +173,57 @@ void HLW8012::expectedActivePower(unsigned int value) {
     if (_power > 0) _power_multiplier *= ((double) value / _power);
 }
 
+void HLW8012::expectedCurrentAveraged(double value) {
+    //Doing Moving Average
+    double _mul = 0;
+    unsigned long now = millis();
+    while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
+        if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
+        expectedCurrent(value);
+        if(_mul == 0){
+            _mul = _current_multiplier;
+        }
+        else{
+            _mul = (_mul + _current_multiplier)/2;
+        }
+    }
+    _current_multiplier = _mul;
+}
+
+void HLW8012::expectedVoltageAveraged(unsigned int value) {
+       //Doing Moving Average
+    double _mul = 0;
+    unsigned long now = millis();
+    while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
+        if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
+        expectedVoltage(value);
+        if(_mul == 0){
+            _mul = _voltage_multiplier;
+        }
+        else{
+            _mul = (_mul + _voltage_multiplier)/2;
+        }
+    }
+    _voltage_multiplier = _mul;
+}
+
+void HLW8012::expectedActivePowerAveraged(unsigned int value) {
+       //Doing Moving Average
+    double _mul = 0;
+    unsigned long now = millis();
+    while(millis() - now <= DEFAULT_AVERAGE_CALIB_DURATION){
+        if(millis() % DEFAULT_AVERAGE_CALIB_READ_FREQUNCY != 0) continue;
+        expectedActivePower(value);
+        if(_mul == 0){
+            _mul = _power_multiplier;
+        }
+        else{
+            _mul = (_mul + _power_multiplier)/2;
+        }
+    }
+    _power_multiplier = _mul;
+}
+
 void HLW8012::resetMultipliers() {
     _calculateDefaultMultipliers();
 }

@@ -54,6 +54,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define DEFAULT_FILTER_WEIGHT 20
 
+#define DEFAULT_AVERAGE_CALIB_DURATION 2000
+#define DEFAULT_AVERAGE_CALIB_READ_FREQUNCY 10
+
 
 // Define ICACHE_RAM_ATTR for AVR platforms
 #if defined(ARDUINO_ARCH_AVR)
@@ -101,6 +104,10 @@ class HLW8012 {
         void expectedCurrent(double current);
         void expectedVoltage(unsigned int current);
         void expectedActivePower(unsigned int power);
+
+        void expectedCurrentAveraged(double current);
+        void expectedVoltageAveraged(unsigned int current);
+        void expectedActivePowerAveraged(unsigned int power);
 
         double getCurrentMultiplier() { return _current_multiplier; };
         double getVoltageMultiplier() { return _voltage_multiplier; };
